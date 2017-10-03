@@ -1,7 +1,8 @@
 function createMultiplierService(execlib, ParentService, leveldblib) {
   'use strict';
 
-  var q = execlib.lib.q;
+  var lib = execlib.lib;
+  var q = lib.q;
   
   var execSuite = execlib.execSuite,
     RemoteServiceListenerServiceMixin = execSuite.RemoteServiceListenerServiceMixin;
@@ -31,7 +32,7 @@ function createMultiplierService(execlib, ParentService, leveldblib) {
   };
 
   MultiplierService.prototype.onConfig = function(configsink){
-    taskRegistry.run('queryLevelDB',{
+    execSuite.taskRegistry.run('queryLevelDB',{
       queryMethodName: 'query',
       sink: configsink,
       scanInitially: true,
