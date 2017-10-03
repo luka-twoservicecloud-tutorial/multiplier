@@ -13,6 +13,8 @@ function createMultiplierService(execlib, ParentService, leveldblib) {
     };
   }
 
+  //This is the scenario #3 implementation
+  //For different scenarios, check different git branches
   function MultiplierService(prophash) {
     ParentService.call(this, prophash);
     RemoteServiceListenerServiceMixin.call(this);
@@ -23,6 +25,8 @@ function createMultiplierService(execlib, ParentService, leveldblib) {
   ParentService.inherit(MultiplierService, factoryCreator);
   RemoteServiceListenerServiceMixin.addMethods(MultiplierService);
   
+  //This is the scenario #3 implementation
+  //For different scenarios, check different git branches
   MultiplierService.prototype.__cleanUp = function() {
     RemoteServiceListenerServiceMixin.prototype.destroy.call(this);
     ParentService.prototype.__cleanUp.call(this);
@@ -45,15 +49,21 @@ function createMultiplierService(execlib, ParentService, leveldblib) {
     });
   };
 
+  //This is the scenario #3 implementation
+  //For different scenarios, check different git branches
   MultiplierService.prototype.multiply = execSuite.dependentServiceMethod([],['multiplier'],function(multiplier, number, defer){
     defer.resolve(multiplier * number);
   });
 
+  //This is the scenario #3 implementation
+  //For different scenarios, check different git branches
   MultiplierService.prototype.onMultiplierSet = function(keyvalarray){
     var key = keyvalarray[0], val = keyvalarray[1];
     this.state.set(key,val);
   };
 
+  //This is the scenario #3 implementation
+  //For different scenarios, check different git branches
   MultiplierService.prototype.onMultiplierRemoved = function(key){
     this.state.remove(key);
   };
