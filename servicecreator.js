@@ -16,6 +16,7 @@ function createMultiplierService(execlib, ParentService, leveldblib) {
   function MultiplierService(prophash) {
     ParentService.call(this, prophash);
     RemoteServiceListenerServiceMixin.call(this);
+    this.multiplier = null;
     this.findRemote(prophash.configsinkname, null, 'Config');
     this.state.data.listenFor('Config',this.onConfig.bind(this),true);
   }
@@ -24,6 +25,7 @@ function createMultiplierService(execlib, ParentService, leveldblib) {
   RemoteServiceListenerServiceMixin.addMethods(MultiplierService);
   
   MultiplierService.prototype.__cleanUp = function() {
+    this.multiplier = null;
     RemoteServiceListenerServiceMixin.prototype.destroy.call(this);
     ParentService.prototype.__cleanUp.call(this);
   };
@@ -45,17 +47,17 @@ function createMultiplierService(execlib, ParentService, leveldblib) {
     });
   };
 
-  MultiplierService.prototype.multiply = execSuite.dependentServiceMethod([],['multiplier'],function(multiplier, number, defer){
-    defer.resolve(multiplier * number);
-  });
+  MultiplierService.prototype.multiply = function(number){
+    return q(number * this.multiplier);
+  };
 
   MultiplierService.prototype.onMultiplierSet = function(keyvalarray){
     var key = keyvalarray[0], val = keyvalarray[1];
-    this.state.set(key,val);
+    this.multiplier = val;
   };
 
   MultiplierService.prototype.onMultiplierRemoved = function(key){
-    this.state.remove(key);
+    this.multiplier = null;
   };
 
   MultiplierService.prototype.propertyHashDescriptor = {
